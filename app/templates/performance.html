@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Performance
+{% endblock %}
+
+{% block main %}
+    {% set model = evaluation["Test Dataset"] %}
+    {% set cv = evaluation["CV"] %}
+
+    <div class="flex-container-performance">
+        <div class="item-metrics">
+            <p class="metrics-title">ROC-AUC</p>
+            <p class="metrics-value">{{ model["roc_auc"] | prob }}</p>
+        </div>
+        <div class="item-metrics">
+            <p class="metrics-title">PR-AUC</p>
+            <p class="metrics-value">{{ model["pr_auc"] | prob }}</p>
+        </div>
+        <div class="item-metrics">
+            <p class="metrics-title">Base Rate</p>
+            <p class="metrics-value">{{ model["base_rate"] | prob }}</p>
+        </div>
+        <div class="item-metrics">
+            <p class="metrics-title">Brier</p>
+            <p class="metrics-value">{{ model["brier"] | prob }}</p>
+        </div>
+        <div class="item-metrics">
+            <p class="metrics-title">CV-test gap</p>
+            <p class="metrics-value">{{ (cv["roc_auc"] - model["roc_auc"]) | prob }}</p>
+        </div>
+    </div>
+    <div class="grid-container-curves">
+        <div class="item-curves" style="grid-area: curve-1">
+            <p class="chart-title">ROC Curve</p>
+            <p class="chart-subtitle">AUC {{ curve_data["roc_curve"].get("roc_auc") | prob }} · dashed line is the "random" baseline</p>
+            <div class="chart">
+                <canvas id="rocCurve" data-curve='{{ curve_data["roc_curve"] | tojson }}'></canvas>
+            </div>
+        </div>
+        <div class="item-curves" style="grid-area: curve-2">
+            <p class="chart-title">PR Curve</p>
+            <p class="chart-subtitle">AUC {{ curve_data["pr_curve"].get("pr_auc") | prob }} · dashed line is the base rate</p>
+            <div class="chart">
+                <canvas id="prCurve" data-curve='{{ curve_data["pr_curve"] | tojson }}'></canvas>
+            </div>
+        </div>
+        <div class="item-curves" style="grid-area: curve-3">
+            <p class="chart-title">Cumulative Gains Curve</p>
+            <p class="chart-subtitle">Proportion of churners caught by proportion contacted</p>
+                <div class="chart">
+                <canvas id="gainsCurve" data-curve='{{ curve_data["gains_curve"] | tojson }}'></canvas>
+                </div>
+            </div>
+        <div class="item-curves" style="grid-area: curve-4">
+            <p class="chart-title">Calibration Curve</p>
+            <p class="chart-subtitle">Marker size shows customers per bin</p>
+            <div class="chart">
+                <canvas id="calibrationCurve" data-curve='{{ curve_data["calibration"] | tojson }}'></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="evaluation-table">
+        <p class="table-title">Evaluation Table</p>
+        <p class="table-subtitle">Generated using the test dataset ({{ test_count }}-customer cohort at the {{ provenance["test_cutoff"] }} cutoff).</p>
+        <div class="table-container">
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th class="row-left">Model</th>
+                        <th class="row-right">ROC-AUC</th>
+                        <th class="row-right">PR-AUC</th>
+                        <th class="row-right">Flagged</th>
+                        <th class="row-right">Precision</th>
+                        <th class="row-right">Recall</th>
+                        <th class="row-right">F1</th>
+                        <th class="row-right">Lift</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for name, row in evaluation.items() %}
+                        <tr>
+                            <td class="row-left">
+                                {% if name not in ["CV", "Test Dataset", "Test Dataset with Unseen Customers only"] %}
+                                    {{ name }}
+                                {% else %}
+                                    {{ provenance["winner"] ~ " (" ~ name ~ ")" }}
+                                {% endif %}
+                            </td>
+                            <td class="row-right">
+                                {% if row["roc_auc"] is not none %}
+                                    {{ row["roc_auc"] | prob }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="row-right">
+                                {% if row["pr_auc"] is not none %}
+                                    {{ row["pr_auc"] | prob }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="row-right">
+                                {% if row["n_flagged"] is not none %}
+                                    {{ row["n_flagged"] }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="row-right">
+                                {% if row["precision"] is not none %}
+                                    {{ row["precision"] | prob }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="row-right">
+                                {% if row["recall"] is not none %}
+                                    {{ row["recall"] | prob }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="row-right">
+                                {% if row["f1"] is not none %}
+                                    {{ row["f1"] | prob }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="row-right">
+                                {% if row["lift"] is not none %}
+                                    {{ row["lift"] | round(1) }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="lift-table">
+        <p class="table-title">Lift by Decile</p>
+        <div class="table-container">
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th class="row-left">Decile</th>
+                        <th class="row-right">Number of Customers in Decile</th>
+                        <th class="row-right">Churned</th>
+                        <th class="row-right">Precision</th>
+                        <th class="row-right">Lift</th>
+                        <th class="row-right">Cumulative Recall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for decile in curve_data["lift"] %}
+                        <tr>
+                            <td class="row-left">{{ decile["decile"] }}</td>
+                            <td class="row-right">{{ decile["n_rows"] }}</td>
+                            <td class="row-right">{{ decile["n_churned"] }}</td>
+                            <td class="row-right">{{ decile["precision"] | prob }}</td>
+                            <td class="row-right">{{ decile["lift"] | round(1) }}</td>
+                            <td class="row-right">
+                                <div class="bar-track-performance">
+                                    <div class="bar-fill-performance" style="width: {{ decile['cumulative_recall'] * 100 }}%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='performance.js') }}"></script>
+{% endblock %}

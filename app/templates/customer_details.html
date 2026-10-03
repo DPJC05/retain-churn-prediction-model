@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Customer Details
+{% endblock %}
+
+{% block main %}
+    {% set recency, frequency, monetary, tenure = percentiles %}
+    <a id="return" href="{{ url_for('main.customers', **request.args) }}">← Back to Customers</a>
+    <div class="profile-flex-container">
+        <div class="circle" data-value="{{ customer_score['risk_band'] }}">{{ customer_score["churn_proba"] | prob }}</div>
+        <div class="profile-grid-container">
+            <span id="profile-1" style="grid-area: profile-1">Customer {{ customer_score["customer_id"] }}</span>
+            <span id="profile-2" style="grid-area: profile-2">{{ customer_score["country"] }} · {{ customer_score["risk_band"] }} Risk</span>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th id="comparison-table-headers">
+                        <span id="comparison-table-title" style="grid-area: header-1">Against the Population</span>
+                        <span id="comparison-table-description" style="grid-area: header-2">percentile amongst {{ kpis["customers_scored"] }} scored customers</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="comparison-table-body">
+                    <td>
+                        <div class="grid-container-row">
+                            <span class="label-left" style="grid-area: row-1">Days Since Last Purchase</span>
+                            <span class="label-right" style="grid-area: row-2">{{ customer_score["recency"] }} days · {{ recency["percentile"] | round | int }}th percentile</span>
+                        </div>
+                        <div class="bar-track-customer">
+                            <div class="bar-fill-customer-raises" style="width: {{ recency['percentile'] }}%"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="comparison-table-body">
+                    <td>
+                        <div class="grid-container-row">
+                            <span class="label-left" style="grid-area: row-1">Order Count</span>
+                            <span class="label-right" style="grid-area: row-2">{{ customer_score["frequency"] }} orders · {{ frequency["percentile"] | round | int }}th percentile</span>
+                        </div>
+                        <div class="bar-track-customer">
+                            <div class="bar-fill-customer-lowers" style="width: {{ frequency['percentile'] }}%"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="comparison-table-body">
+                    <td>
+                        <div class="grid-container-row">
+                            <span class="label-left" style="grid-area: row-1">Total Spend</span>
+                            <span class="label-right" style="grid-area: row-2">{{ customer_score["monetary"] | currency }} · {{ monetary["percentile"] | round | int }}th percentile</span>
+                        </div>
+                        <div class="bar-track-customer">
+                            <div class="bar-fill-customer-lowers" style="width: {{ monetary['percentile'] }}%"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="comparison-table-body">
+                    <td>
+                        <div class="grid-container-row">
+                            <span class="label-left" style="grid-area: row-1">Tenure</span>
+                            <span class="label-right" style="grid-area: row-2">{{ customer_score["tenure"] }} days · {{ tenure["percentile"] | round | int }}th percentile</span>
+                        </div>
+                        <div class="bar-track-customer">
+                            <div class="bar-fill-customer-lowers" style="width: {{ tenure['percentile'] }}%"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="comparison-table-body">
+                    <td>
+                        <div class="grid-container-legends">
+                            <div class="legend-colour-raises" style="grid-area: legend-1"></div>
+                            <span class="legend-text" style="grid-area: legend-2">Raises Churn Risk</span>
+                            <div class="legend-colour-lowers" style="grid-area: legend-3"></div>
+                            <span class="legend-text" style="grid-area: legend-4">Lowers Churn Risk</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{
+  "trained_at": "2026-09-26T05:30:49.633068",
+  "sklearn_version": "1.9.0",
+  "training_cutoffs": [
+    "2010-10-01",
+    "2010-11-01",
+    "2010-12-01",
+    "2011-01-01",
+    "2011-02-01"
+  ],
+  "test_cutoff": "2011-07-12",
+  "churn_horizon": 150,
+  "eligibility_lookback": 150,
+  "feature_columns": [
+    "recency",
+    "frequency",
+    "monetary",
+    "mean_order_value",
+    "tenure",
+    "avg_inter_purchase_gap",
+    "std_inter_purchase_gap",
+    "recency_ratio",
+    "spend_30d",
+    "spend_90d",
+    "spend_150d",
+    "orders_30d",
+    "orders_90d",
+    "orders_150d",
+    "spend_momentum_30d_90d",
+    "spend_momentum_90d_150d",
+    "order_momentum_30d_90d",
+    "order_momentum_90d_150d",
+    "distinct_products",
+    "mean_order_quantity",
+    "return_rate",
+    "country"
+  ],
+  "winner": "Logistic Regression",
+  "best_params": {
+    "classifier__C": 0.1873817422860383,
+    "classifier__l1_ratio": 0.5,
+    "classifier__solver": "saga"
+  },
+  "chosen_threshold": 0.637894289099389,
+  "cv_roc_auc": 0.7652484104816103,
+  "test_roc_auc": 0.7855580044079342
+}

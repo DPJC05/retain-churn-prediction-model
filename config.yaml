@@ -1,0 +1,48 @@
+data:
+  raw_path: "data/raw/online_retail_II.xlsx"
+  interim_path: "data/interim/transactions.parquet"
+  processed_path: "data/processed/features.parquet"
+
+prep:
+  column_map: {
+    "Invoice": "invoice",
+    "StockCode": "stock_code",
+    "Description": "description",
+    "Quantity": "quantity",
+    "InvoiceDate": "invoice_date",
+    "Price": "price",
+    "Customer ID": "customer_id",
+    "Country": "country",
+  }
+  non_products: ["POST", "D", "M", "C2", "BANK CHARGES", "TEST001", "TEST002", "ADJUST", "ADJUST2", "DOT", "CRUK"]
+  purge_report_persist_path: "data/interim/data_prep_purge_report.json"
+
+labelling:
+  cutoffs: ["2010-10-01", "2010-11-01", "2010-12-01", "2011-01-01", "2011-02-01", "2011-07-12"]
+  churn_horizon: 150
+  eligibility_lookback: 150
+  lookback_days: [30, 90, 150]
+
+model:
+  random_state: 42
+  test_cutoff: "2011-07-12"
+  heuristic_baseline: 75
+  model_persist_path: "models/churn_pipeline.joblib"
+  metadata_persist_path: "models/metadata.json"
+  evaluation_report_persist_path: "models/evaluation_report.json"
+  curve_data_persist_path: "models/curve_data.json"
+  evaluation_arrays_persist_path: "models/evaluation_arrays.npz"
+
+economics:
+  cost_per_contact: 2.50
+  average_customer_lifetime_value: 451.50
+  save_rate: 0.30
+  sensitivity_spread: 0.10
+  sensitivity_points: 5 
+  campaign_capacity: 500
+
+prediction:
+  medium_risk_band_multiplier: 0.5
+
+database:
+  db_path: "database/retain.db"

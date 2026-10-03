@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retain"
+version = "0.1.0"
+description = "Non-contractual customer churn prediction model with an expected-value dashboard"
+authors = [
+    { name = "Dominic Chan", email = "dpjcdy05@gmail.com" }
+]
+license = "MIT"
+requires-python = ">=3.13"
+
+[tool.setuptools]
+packages = ["src", "app"]
