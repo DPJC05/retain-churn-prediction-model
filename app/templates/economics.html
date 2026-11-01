@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Economics
+{% endblock %}
+
+{% block main %}
+    <div class="capacity-binding" id="capacityBanner" {% if not rendered["capacity_binding"] %}hidden{% endif %}>
+        <span class="capacity-binding-text">
+            <b>Capacity is binding.</b>
+            The profit optimum would contact <span id="unconstrainedFlagged">{{ rendered["unconstrained_n_flagged"] }}</span> customers
+            for <span id="unconstrainedValue">{{ rendered["unconstrained_expected_value"] | currency }}</span>.
+            The <span id="rawCapacity">{{ rendered["raw_capacity"] }}</span>-call limit yields
+            <span id="bannerValue">{{ rendered["expected_value"] | currency }}</span>,
+            so the constraint costs <span id="forgoneValue">{{ rendered["forgone_value"] | currency }}</span>.
+        </span>
+    </div>
+    <div class="grid-container-economics-1">
+        <div class="grid-item-sliders" style="grid-area: econ-1">
+            <p id="sliders-title"><b>Assumptions</b></p>
+            <form id="economics-form" method="post" action="{{ url_for('main.economics') }}">
+                <div class="economics-slider">
+                    <label for="cost-per-contact" class="form-label"><b>Cost Per Contact</b></label>
+                    <input type="range" class="form-range" id="cost-per-contact" name="cost_per_contact" min="0.01" max="20" step="0.01" value="{{ request.args.get('cost_per_contact') or economics.cost_per_contact }}">
+                    <output for="cost-per-contact" id="costRangeValue" aria-live="polite"></output>
+                </div>
+                <div class="economics-slider">
+                    <label for="customer-lifetime-value" class="form-label"><b>Customer Lifetime Value</b></label>
+                    <input type="range" class="form-range" id="customer-lifetime-value" name="average_customer_lifetime_value" min="0.01" max="2000" step="0.01" value="{{ request.args.get('average_customer_lifetime_value') or economics.average_customer_lifetime_value }}">
+                    <output for="customer-lifetime-value" id="clvRangeValue" aria-live="polite"></output>
+                </div>
+                <div class="economics-slider">
+                    <label for="save-rate" class="form-label"><b>Save Rate</b></label>
+                    <input type="range" class="form-range" id="save-rate" name="save_rate" min="0.01" max="1" step="0.01" value="{{ request.args.get('save_rate') or economics.save_rate }}">
+                    <output for="save-rate" id="saveRangeValue" aria-live="polite"></output>
+                </div>
+                <div class="economics-slider">
+                    <label for="campaign-capacity" class="form-label"><b>Campaign Capacity</b></label>
+                    <input type="range" class="form-range" id="campaign-capacity" name="campaign_capacity" min="1" max="{{ rendered['n_evaluated'] }}" step="1" value="{{ request.args.get('campaign_capacity') or economics.campaign_capacity }}">
+                    <output for="campaign-capacity" id="capacityRangeValue" aria-live="polite"></output>
+                </div>
+                <a class="btn btn-outline-secondary reset" href="{{ url_for('main.economics') }}">Reset Parameters</a>
+            </form>
+        </div>
+        <div class="item-curves" id="expected-value-curve" style="grid-area: econ-2">
+            <p class="chart-title">Expected Value Curve by Contact Threshold</p>
+            <p class="table-subtitle">Shaded band shows the save rate at ±10 percentage points.</p>
+            <div class="chart">
+                <canvas id="evCurve" data-payload='{{ rendered | tojson }}'></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="grid-container-economics-2">
+        <div class="item-econ" style="grid-area: econ-3">
+            <p class="econ-title">Expected Value</p>
+            <p class="econ-value" id="evValue">{{ rendered["expected_value"] | currency }}</p>
+        </div>
+        <div class="item-econ" style="grid-area: econ-4">
+            <p class="econ-title">Targeted</p>
+            <p class="econ-value" id="targeted">{{ rendered["n_flagged"] }}</p>
+        </div>
+        <div class="item-econ" style="grid-area: econ-5">
+            <p class="econ-title">Precision</p>
+            <p class="econ-value" id="precision">{{ rendered["precision"] | prob }}</p>
+        </div>
+        <div class="item-econ" style="grid-area: econ-6">
+            <p class="econ-title">Recall</p>
+            <p class="econ-value" id="recall">{{ rendered["recall"] | prob }}</p>
+        </div>
+    </div>
+    <div class="economics-table">
+        <p class="table-title">Sensitivity Grid</p>
+        <div class="table-container">
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th class="row-left index">Save Rate</th>
+                        <th class="row-right content">Expected Value</th>
+                        <th class="row-right bar"></th>
+                    </tr>
+                </thead>
+                <tbody id="sensitivityBody">
+                    {% set max_value = rendered["expected_value_by_save_rate"].values() | max %}
+                    {% for save_rate, value in rendered["expected_value_by_save_rate"].items() %}
+                        <tr>
+                            <td class="row-left">{{ save_rate.replace("save_rate_", "") | float | pct }}</td>
+                            <td class="row-right">{{ value | currency }}</td>
+                            <td class="row-right">
+                                <div class="bar-track-economics">
+                                    <div class="bar-fill-economics" style="width: {{ [value / max_value * 100, 0] | max if max_value > 0 else 0 }}%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='economics.js') }}"></script>
+{% endblock %}

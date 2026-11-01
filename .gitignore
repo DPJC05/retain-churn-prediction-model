@@ -1,0 +1,92 @@
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# Python Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Data
+data/raw/*
+data/interim/*
+data/processed/*
+!data/**/.gitkeep
+*.xlsx
+*.parquet
+!tests/fixtures/*.csv
+
+# Trained Models & Artifacts
+models/*.joblib
+*.joblib
+!models/metadata.json
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated Charts
+app/static/img/generated/*
+!app/static/img/generated/.gitkeep
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Secrets & Credentials
+.env
+*.env
+.env.*
+secrets.json
+kaggle.json
+.kaggle/
+credentials.*
+*.key
+*.pem
+
+# Flask & Web Runtime
+instance/
+.webassets-cache
+flask_session/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# OS Cruft
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Editor & IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Logs & Temp
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+
+# TOML Environment Metadata
+*.egg-info
+build/
+dist/

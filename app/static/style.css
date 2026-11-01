@@ -1,0 +1,633 @@
+/* Universal Formatting */
+
+body {
+    background-color: #FFFFFF;
+}
+
+/* Navigation Bar */
+
+.dashboard-navbar {
+    background-color: #001A32 !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.navbar-brand {
+    padding-right: 2rem;
+    display: flex !important;
+    flex-direction: column;
+    white-space: normal;
+    line-height: 1.2;
+}
+
+#dashboard-title {
+    color: #FFFFFF !important;
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: 1.75rem !important;
+}
+
+#dashboard-subtitle {
+    color: #FFFFFF !important;
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: 0.75rem !important;
+}
+
+.navbar .nav-item {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    text-align: bottom !important;
+}
+
+.navbar .nav-link {
+    color: #FFFFFF !important;
+    font-family: "Inter", system-ui, sans-serif;
+}
+
+.navbar .nav-link:hover {
+    color: #00AEEF !important;
+}
+
+/* Charts and Visualisations */
+
+.chart-title {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #24477F;
+}
+
+.chart-subtitle {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 1rem;
+}
+
+.chart {
+    width: 34rem;
+    height: 19rem;
+    padding-top: 0.5rem
+}
+
+/* Tables */
+
+.table-container {
+    width: 100%;
+    border: 1.25px solid #001A32;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.standard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+th {
+    background-color: #001A32;
+    font-family: "Inter", system-ui, sans-serif;
+    color: #FFFFFF;
+    padding: 0.6rem;
+    border-bottom: 1.25px solid #001A32;
+}
+
+td {
+    background-color: #FFFFFF;
+    font-family: "Inter", system-ui, sans-serif;
+    padding: 0.6rem;
+    border-bottom: 1.25px solid #001A32;
+}
+
+tr:last-child td {
+    border-bottom: 0;
+}
+
+.row-left {
+    text-align: left;
+}
+
+.row-right {
+    text-align: right;
+}
+
+.table-title {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #24477F;
+}
+
+.table-subtitle {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 1rem;
+    padding-bottom: 1em;
+}
+
+/* Error Message Pages */
+
+.error {
+    text-align: left;
+}
+
+.error-title {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: 5rem;
+    font-weight: bold;
+    padding-bottom: 2.5rem;
+}
+
+.error-message {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    padding-bottom: 2rem;
+}
+
+.error-url {
+    display: inline-block;
+    font-family: "Inter", system-ui, sans-serif;
+    padding: 0.5rem 1rem;
+    background-color: #2251FF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.error-url:hover {
+    background-color: #0056b3;
+}
+
+/* Overview Page (with overlaps from Performance and Economics Pages) */
+
+.grid-container-index {
+    display: grid;
+    width: 100%;
+    grid-auto-columns: auto;
+    grid-auto-rows: auto;
+    grid-template-areas: 
+    "kpi-1 kpi-2 kpi-3 kpi-4"
+    "bands bands model model";
+    gap: 3em;
+    justify-items: center;
+    align-items: center;
+    justify-content: left;
+    align-content: center
+}
+
+.item-kpi, .item-metrics, .item-econ {
+    width: 18rem;
+    height: 5rem;
+}
+
+.kpi-title, .metrics-title, .econ-title {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 1.25rem;
+}
+
+.kpi-value, .metrics-value, .econ-value {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #24477F;
+}
+
+.item-bands, .item-curves {
+    width: 39rem;
+    height: 27rem;
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    outline: 2px #24477F solid;
+    border-radius: 0.5rem;
+}
+
+.item-model {
+    width: 39rem;
+    height: 27rem;
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    outline: 2px #24477F solid;
+    border-radius: 0.5rem;
+}
+
+.model-title {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #24477f;
+    padding-bottom: 0.5rem;
+}
+
+.model-provenance {
+    width: 34rem;
+    height: 20rem;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 1.4rem;
+}
+
+.model-value {
+    font-weight: bold;
+    color: #24477f;
+    text-align: right;
+}
+
+/* Customers Page */
+
+.flex-container-table-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10rem;
+    padding-bottom: 2rem;
+}
+
+.flex-container-filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.flex-item-filter-labels {
+    font-family: "Inter", system-ui, sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: right;
+}
+
+.flex-item-filters {
+    font-family: "Inter", system-ui, sans-serif;
+    background-color: #F0F3FA;
+    width: 11rem;
+    gap: 1rem;
+}
+
+.flex-item-submit {
+    font-family: "Inter", system-ui, sans-serif;
+    background-color: #24477F;
+    border: #24477F !important;
+}
+
+.flex-item-export {
+    font-family: "Inter", system-ui, sans-serif;
+    color: #FFFFFF;
+    background-color: #24477F;
+    width: 7.5rem;
+    gap: 1rem;
+}
+
+.customer-id {
+    text-decoration: none; 
+}
+
+.customer-id:hover {
+    color: #00AEEF; 
+}
+
+.risk-band {
+    text-decoration: none;
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.risk-band[data-value="High"] {
+    color: #FFFFFF;
+    background-color: #2251FF;
+}
+
+.risk-band[data-value="Medium"] {
+    color: #FFFFFF;
+    background-color: #7B95E0;
+}
+
+.risk-band[data-value="Low"] {
+    color: #24477F;
+    background-color: #D0DAF5;
+}
+
+.flex-container-pagination {
+    display: flex;
+    justify-content: left;
+    gap: 0.5rem;
+    padding-top: 2rem;
+}
+
+.consecutive-pages {
+    text-decoration: none;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0.5rem;
+    color: #FFFFFF;
+    background-color: #24477F;
+    border: 0;
+}
+
+.current-page {
+    text-decoration: none;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 0.5rem;
+    color: #000000;
+}
+
+/* Customer Details Page */
+
+#return {
+    text-decoration: none; 
+    font-family: "Inter", system-ui, sans-serif;
+    color: #2251FF;
+    font-size: 1rem;
+}
+
+#return:hover {
+    text-decoration: none; 
+    color: #00AEEF;
+}
+
+.profile-flex-container {
+    display: flex;
+    width: 50%;
+    align-items: center;
+    justify-content: left;
+    gap: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+}
+
+.circle {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    border: 1px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.circle[data-value="High"] {
+    background-color: #2251FF;
+    color: #FFFFFF;
+}
+
+.circle[data-value="Medium"] {
+    color: #FFFFFF;
+    background-color: #7B95E0;
+}
+
+.circle[data-value="Low"] {
+    color: #24477F;
+    background-color: #D0DAF5;
+}
+
+.profile-grid-container {
+    display: grid;
+    grid-template-areas:
+    "profile-1"
+    "profile-2";
+    font-family: "Inter", system-ui, sans-serif;
+}
+
+#profile-1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #24477F;
+}
+
+#comparison-table-headers {
+    display: grid;
+    grid-template-areas: "header-1 header-2";
+    width: 100%;
+    align-items: center;
+}
+
+#comparison-table-title {
+    text-align: left;
+}
+
+#comparison-table-description {
+    font-weight: normal !important;
+    text-align: right;
+}
+
+.comparison-table-body td {
+    padding: 0.75rem;
+}
+
+.grid-container-row {
+    display: grid;
+    grid-template-areas: "row-1 row-2";
+    width: 100%;
+    align-items: center;
+    padding-bottom: 0.5rem;
+}
+
+.label-left {
+    text-align: left;
+    font-weight: bold;
+}
+
+.label-right {
+    text-align: right;
+}
+
+.bar-track-customer {
+    height: 10px;
+    background-color: #E6E9EC;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.bar-fill-customer-raises {
+    height: 100%;
+    background-color: #2251FF;
+    border-radius: 4px;
+    position: relative; 
+    overflow: visible;
+}
+
+.bar-fill-customer-lowers {
+    height: 100%;
+    background-color: #A3B8E8;
+    border-radius: 4px;
+    position: relative; 
+    overflow: visible;
+}
+
+.grid-container-legends {
+    display: grid;
+    grid-template-areas: "legend-1 legend-2 legend-3 legend-4";
+    width: 30%;
+    align-items: center;
+    gap: 1px;
+    padding-left: 1rem;
+}
+
+.legend-colour-raises {
+    height: 10px;
+    width: 10px;
+    background-color: #2251FF;
+}
+
+.legend-colour-lowers {
+    height: 10px;
+    width: 10px;
+    background-color: #A3B8E8;
+}
+
+.legend-text {
+    text-align: left;
+}
+
+/* Performance Page */
+
+.flex-container-performance {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+    padding-bottom: 3em;
+}
+
+.grid-container-curves {
+    display: grid;
+    width: 100%;
+    grid-auto-columns: auto;
+    grid-auto-rows: auto;
+    grid-template-areas: 
+    "curve-1 curve-2" 
+    "curve-3 curve-4";
+    gap: 3em;
+    justify-items: center;
+    align-items: center;
+    justify-content: left;
+    align-content: center
+}
+
+.item-curves {
+    height: 29rem;
+}
+
+.evaluation-table {
+    padding-top: 3em;
+    padding-bottom: 3em;
+}
+
+.bar-track-performance {
+    height: 10px;
+    background-color: #E6E9EC;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 80%;
+    margin-left: auto;
+}
+
+.bar-fill-performance {
+    height: 100%;
+    background-color: #2251FF;
+    border-radius: 4px;
+}
+
+/* Campaign Economics Simulator Page */
+
+.capacity-binding {
+    width: 100%;
+    display: flex;
+    border: 2px solid #001A32;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #D0DAF5;
+    align-items: center;
+    justify-content: center;
+}
+
+.capacity-binding-text {
+    padding: 0.5rem;
+}
+
+.grid-container-economics-1 {
+    width: 100%;
+    display: grid;
+    grid-template-areas: "econ-1 econ-2";
+    padding-top: 2rem;
+    gap: 3rem;
+}
+
+.grid-item-sliders {
+    width: 39rem;
+    height: 35rem;
+    padding-right: 2.5rem;
+}
+
+#sliders-title {
+    padding-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.economics-slider {
+    padding-bottom: 1.5rem;
+}
+
+.reset {
+    font-family: "Inter", system-ui, sans-serif;
+    color: #FFFFFF;
+    background-color: #2251FF;
+    width: 36.5rem;
+    gap: 1rem;
+}
+
+#expected-value-curve {
+    height: 34rem;
+}
+
+.grid-container-economics-2 {
+    width: 100%;
+    display: grid;
+    grid-template-areas: "econ-3 econ-4 econ-5 econ-6";
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    gap: 3rem;
+}
+
+.index {
+    width: 10%;
+}
+
+.content {
+    width: 20%;
+}
+
+.bar {
+    width: 70%;
+}
+
+.bar-track-economics {
+    height: 10px;
+    background-color: #E6E9EC;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    margin-left: auto;
+}
+
+.bar-fill-economics {
+    height: 100%;
+    background-color: #2251FF;
+    border-radius: 4px;
+}

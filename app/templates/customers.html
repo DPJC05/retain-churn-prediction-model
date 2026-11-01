@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Customers
+{% endblock %}
+
+{% block main %}
+    <div class="flex-container-table-buttons">
+        <form action="{{ url_for('main.customers') }}" method="GET" class="flex-container-filters">
+            <div class="flex-item-filter-labels"><label for="band">Risk Band:</label></div>
+            <select class="form-select flex-item-filters" id="band" name="band" onchange="this.form.submit()">
+                <option value="">All Risk Bands</option>
+                    {% for band in bands %}
+                        <option value="{{ band }}" {% if current_filters["risk_band"] == band %}selected{% endif %}>{{ band }}</option>
+                    {% endfor %}
+            </select>
+            <div class="flex-item-filter-labels"><label for="country">Country:</label></div>
+            <select class="form-select flex-item-filters" id="country" name="country" onchange="this.form.submit()">
+                <option value="">All Countries</option>
+                    {% for country in countries %}
+                        <option value="{{ country }}" {% if current_filters["country"] == country %}selected{% endif %}>{{ country }}</option>
+                    {% endfor %}                </select>
+            <div class="flex-item-filter-labels"><label for="sort">Sort By:</label></div>
+            <select class="form-select flex-item-filters" id="sort" name="sort">
+                {% for row in sort %}
+                    <option value="{{ row[0] }}" {% if current_filters["sort"] == row[0] %}selected{% endif %}>{{ row[1] }}</option>
+                {% endfor %}
+            </select>
+            <select class="form-select flex-item-filters" id="direction" name="direction" onchange="this.form.submit()">
+                <option value="desc" {% if current_filters["descending"] %}selected{% endif %}>Descending</option>
+                <option value="asc" {% if not current_filters["descending"] %}selected{% endif %}>Ascending</option>
+            </select>
+        </form>
+        <a class="btn btn-outline-secondary flex-item-export" href="{{ url_for('main.export_customers', **request.args) }}">Export CSV</a>
+    </div>
+    <div class="table-container">
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th class="row-left">Customer ID</th>
+                    <th class="row-left">Country</th>
+                    <th class="row-right">Days Since Last Purchase</th>
+                    <th class="row-right">Order Count</th>
+                    <th class="row-right">Total Spend</th>
+                    <th class="row-right">Tenure</th>
+                    <th class="row-right">Churn Risk</th>
+                    <th class="row-right">Band</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score in scores %}
+                    <tr>
+                        <td class="row-left"><a class="customer-id" href="{{ url_for('main.customer_details', customer_id=score['customer_id'], **request.args) }}">{{ score["customer_id"] }}</a></td>
+                        <td class="row-left">{{ score["country"] }}</td>
+                        <td class="row-right">{{ score["recency"] }}</td>
+                        <td class="row-right">{{ score["frequency"] }}</td>
+                        <td class="row-right">{{ score["monetary"] | currency }}</td>
+                        <td class="row-right">{{ score["tenure"] }}</td>
+                        <td class="row-right">{{ score["churn_proba"] | prob }}</td>
+                        <td class="row-right"><span class="risk-band" data-value="{{ score['risk_band'] }}">{{ score["risk_band"] }}</span></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="flex-container-pagination">
+        {% if pagination["has_prev_page"] %}
+            <a class="consecutive-pages" href="{{ url_for('main.customers', **dict(request.args, page=pagination['previous_page'])) }}">Previous</a>
+        {% else %}
+            <span class="btn btn-outline-secondary btn-sm disabled consecutive-pages">Previous</span>
+        {% endif %}
+            <span class="current-page">
+                Entries {{ pagination["page_entries_list_start"] }}-{{ pagination["page_entries_list_end"] }} of {{ pagination["total_entries"] }} · Page {{ pagination["current_page"] }} of {{ pagination["total_pages"] }}
+            </span>
+        {% if pagination["has_next_page"] %}
+            <a class="consecutive-pages" href="{{ url_for('main.customers', **dict(request.args, page=pagination['next_page'])) }}">Next</a>
+        {% else %}
+            <span class="btn btn-outline-secondary btn-sm disabled consecutive-pages">Next</span>
+        {% endif %}
+    </div>
+{% endblock %}

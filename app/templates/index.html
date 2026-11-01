@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Overview
+{% endblock %}
+
+{% block main %}
+    <div class="grid-container-index">
+        <div class="item-kpi" style="grid-area: kpi-1">
+            <p class="kpi-title">Customers Scored</p>
+            <p class="kpi-value">{{ kpis["customers_scored"] }}</p>
+        </div>
+        <div class="item-kpi" style="grid-area: kpi-2">
+            <p class="kpi-title">Mean Churn Risk</p>
+            <p class="kpi-value">{{ kpis["mean_churn_proba"] | pct }}</p>
+        </div>
+        <div class="item-kpi" style="grid-area: kpi-3">
+            <p class="kpi-title">High Risk</p>
+            <p class="kpi-value">{{ band_distribution["High"] }}</p>
+        </div>
+        <div class="item-kpi" style="grid-area: kpi-4">
+            <p class="kpi-title">Revenue at Risk</p>
+            <p class="kpi-value">{{ kpis["revenue_at_risk"] | currency }}</p>
+        </div>
+        <div class="item-bands" style="grid-area: bands">
+            <p class="chart-title">Churn Risk Distribution</p>
+            <div class="chart">
+                <canvas id="doughnutChart" 
+                data-values='{{ [
+                    band_distribution.get("High", 0), 
+                    band_distribution.get("Medium", 0), 
+                    band_distribution.get("Low", 0)
+                ] | tojson }}'
+                data-labels='{{ [
+                    "High · " ~ band_distribution.get("High", 0),
+                    "Medium · " ~ band_distribution.get("Medium", 0),
+                    "Low · " ~ band_distribution.get("Low", 0)
+                ] | tojson }}'></canvas>
+            </div>
+        </div>
+        <div class="item-model" style="grid-area: model">
+            <p class="model-title">Model</p>
+            <table class="model-provenance">
+                <tr>
+                    <td class="model-label">Model</td>
+                    <td class="model-value">{{ provenance["winner"] }}</td>
+                </tr>
+                <tr>
+                    <td class="model-label">ROC-AUC</td>
+                    <td class="model-value">{{ provenance["test_roc_auc"] | prob }}</td>
+                </tr>
+                <tr>
+                    <td class="model-label">Threshold</td>
+                    <td class="model-value">{{ provenance["chosen_threshold"] | prob }}</td>
+                </tr>
+                <tr>
+                    <td class="model-label">Trained</td>
+                    <td class="model-value">{{ provenance["trained_at"] | date }}</td>
+                </tr>
+                <tr>
+                    <td class="model-label">Scored</td>
+                    <td class="model-value">{{ kpis["timestamp"] | date }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+{% endblock %}
